@@ -1,0 +1,27 @@
+spring:
+  jpa:
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+    url: jdbc:postgresql://ec2-107-21-67-46.compute-1.amazonaws.com/d1jiot1se9lt7v
+    username: atphrnuxvikfgm
+    password: 3c44f3818b523a35b915ba2c666ff5770d6fcb99f8ba2cb14a01536b71e15345
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+
+jwt:
+  secret-key: bluuminn.sns-application-2023.secret_key
+  token:
+    # 30 days
+    expired-time-ms: 2592000000
