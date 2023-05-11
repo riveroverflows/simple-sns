@@ -1,7 +1,7 @@
 package com.bluuminn.simplesns.service;
 
 import com.bluuminn.simplesns.domain.UserEntity;
-import com.bluuminn.simplesns.domain.UserEntityRepository;
+import com.bluuminn.simplesns.repository.UserEntityRepository;
 import com.bluuminn.simplesns.exception.ErrorCode;
 import com.bluuminn.simplesns.exception.SnsApplicationException;
 import com.bluuminn.simplesns.fixture.UserEntityFixture;
@@ -93,7 +93,7 @@ class UserServiceTest {
 
         // then
         SnsApplicationException e = assertThrows(SnsApplicationException.class, () -> userService.login(username, password));
-        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUNT);
+        assertThat(e.getErrorCode()).isEqualTo(ErrorCode.USER_NOT_FOUND);
     }
 
     @DisplayName("로그인 시 패스워드가 틀린 경우")

@@ -1,7 +1,7 @@
 package com.bluuminn.simplesns.service;
 
 import com.bluuminn.simplesns.domain.UserEntity;
-import com.bluuminn.simplesns.domain.UserEntityRepository;
+import com.bluuminn.simplesns.repository.UserEntityRepository;
 import com.bluuminn.simplesns.exception.ErrorCode;
 import com.bluuminn.simplesns.exception.SnsApplicationException;
 import com.bluuminn.simplesns.model.User;
@@ -38,7 +38,7 @@ public class UserService {
 
     public String login(String username, String password) {
         // 회원가입 여부 체크
-        UserEntity userEntity = userEntityRepository.findByUsername(username).orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUNT, String.format("%s not founded", username)));
+        UserEntity userEntity = userEntityRepository.findByUsername(username).orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", username)));
 
         // 비밀번호 체크
         if (!encoder.matches(password, userEntity.getPassword())) {
