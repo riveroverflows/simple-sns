@@ -1,10 +1,10 @@
 package com.bluuminn.simplesns.service;
 
 import com.bluuminn.simplesns.domain.UserEntity;
-import com.bluuminn.simplesns.repository.UserEntityRepository;
 import com.bluuminn.simplesns.exception.ErrorCode;
 import com.bluuminn.simplesns.exception.SnsApplicationException;
 import com.bluuminn.simplesns.model.User;
+import com.bluuminn.simplesns.repository.UserEntityRepository;
 import com.bluuminn.simplesns.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,5 +48,10 @@ public class UserService {
 
         // TODO: 토큰 생성
         return JwtTokenUtils.generateToken(username, secretKey, expiredTimeMs);
+    }
+
+    public User loadUserByUsername(String username) {
+        return userEntityRepository.findByUsername(username).map(User::fromEntity).orElseThrow(() ->
+                new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", username)));
     }
 }
