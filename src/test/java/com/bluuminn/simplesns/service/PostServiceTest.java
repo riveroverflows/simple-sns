@@ -26,7 +26,7 @@ class PostServiceTest {
     @Autowired
     private PostService postService;
 
-    @Autowired
+    @MockBean
     private PostEntityRepository postEntityRepository;
 
     @MockBean
@@ -47,7 +47,7 @@ class PostServiceTest {
 
     @DisplayName("포스트 작성 시 요청한 유저가 존재하지 않는 경우")
     @Test
-    void create_posts_when_no_user() throws Exception {
+    void no_user_when_create_post() throws Exception {
         String title = "title";
         String body = "body";
         String username = "username";
