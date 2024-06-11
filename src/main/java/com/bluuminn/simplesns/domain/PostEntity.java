@@ -55,7 +55,16 @@ public class PostEntity {
         this.user = user;
     }
 
+    private PostEntity(Integer id, UserEntity user) {
+        this.id = id;
+        this.user = user;
+    }
+
     public static PostEntity of(String title, String body, UserEntity user) {
         return new PostEntity(title, body, user);
+    }
+
+    public static PostEntity of(Integer postId, UserEntity user) {
+        return new PostEntity(postId, user);
     }
 }

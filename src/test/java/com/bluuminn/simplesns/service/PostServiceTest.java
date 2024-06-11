@@ -4,6 +4,8 @@ import com.bluuminn.simplesns.domain.PostEntity;
 import com.bluuminn.simplesns.domain.UserEntity;
 import com.bluuminn.simplesns.exception.ErrorCode;
 import com.bluuminn.simplesns.exception.SnsApplicationException;
+import com.bluuminn.simplesns.fixture.PostEntityFixture;
+import com.bluuminn.simplesns.fixture.UserEntityFixture;
 import com.bluuminn.simplesns.repository.PostEntityRepository;
 import com.bluuminn.simplesns.repository.UserEntityRepository;
 import org.junit.jupiter.api.Assertions;
@@ -57,5 +59,58 @@ class PostServiceTest {
 
         SnsApplicationException e = Assertions.assertThrows(SnsApplicationException.class, () -> postService.create(title, body, username));
         Assertions.assertEquals(ErrorCode.USER_NOT_FOUND, e.getErrorCode());
+    }
+
+    @DisplayName("포스트 수정이 성공한 경우")
+    @Test
+    void modify_posts_success() throws Exception {
+        String title = "title";
+        String body = "body";
+        String username = "username";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(postId, username);
+        UserEntity userEntity = postEntity.getUser();
+
+        when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(userEntity));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+
+        Assertions.assertDoesNotThrow(() -> postService.modify(title, body, username, postId));
+    }
+
+    @DisplayName("포스트 수정 시 포스트가 존재하지 않는 경우")
+    @Test
+    void not_exist_when_modify_post() throws Exception {
+        String title = "title";
+        String body = "body";
+        String username = "username";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(postId, username);
+        UserEntity userEntity = postEntity.getUser();
+
+        when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(userEntity));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.empty());
+
+        SnsApplicationException exception = Assertions.assertThrows(SnsApplicationException.class, () -> postService.modify(title, body, username, postId));
+        Assertions.assertEquals(ErrorCode.POST_NOT_FOUND, exception.getErrorCode());
+    }
+
+    @DisplayName("포스트 수정 시 권한이 없는 경우")
+    @Test
+    void invalid_user_when_modify_post() throws Exception {
+        String title = "title";
+        String body = "body";
+        String username = "username";
+        Integer postId = 1;
+
+        PostEntity postEntity = PostEntityFixture.get(postId, username);
+        UserEntity writer = UserEntityFixture.get("writer", "password");
+
+        when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(writer));
+        when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
+
+        SnsApplicationException exception = Assertions.assertThrows(SnsApplicationException.class, () -> postService.modify(title, body, username, postId));
+        Assertions.assertEquals(ErrorCode.INVALID_PERMISSION, exception.getErrorCode());
     }
 }

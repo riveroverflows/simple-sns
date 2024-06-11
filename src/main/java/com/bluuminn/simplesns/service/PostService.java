@@ -23,4 +23,14 @@ public class PostService {
                 .orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", username)));
         postEntityRepository.save(PostEntity.of(title, body, user));
     }
+
+    @Transactional
+    public void modify(String title, String body, String username, Integer postId) {
+        UserEntity user = userEntityRepository.findByUsername(username)
+                .orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", username)));
+
+        // post exists
+
+        // post permission
+    }
 }
