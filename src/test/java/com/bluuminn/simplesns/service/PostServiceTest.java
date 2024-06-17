@@ -69,7 +69,7 @@ class PostServiceTest {
         String username = "username";
         Integer postId = 1;
 
-        PostEntity postEntity = PostEntityFixture.get(postId, username);
+        PostEntity postEntity = PostEntityFixture.get(postId, username, 1);
         UserEntity userEntity = postEntity.getUser();
 
         when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(userEntity));
@@ -86,7 +86,7 @@ class PostServiceTest {
         String username = "username";
         Integer postId = 1;
 
-        PostEntity postEntity = PostEntityFixture.get(postId, username);
+        PostEntity postEntity = PostEntityFixture.get(postId, username, 1);
         UserEntity userEntity = postEntity.getUser();
 
         when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(userEntity));
@@ -104,8 +104,8 @@ class PostServiceTest {
         String username = "username";
         Integer postId = 1;
 
-        PostEntity postEntity = PostEntityFixture.get(postId, username);
-        UserEntity writer = UserEntityFixture.get("writer", "password");
+        PostEntity postEntity = PostEntityFixture.get(postId, username, 1);
+        UserEntity writer = UserEntityFixture.get("writer", "password", 2);
 
         when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(writer));
         when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));

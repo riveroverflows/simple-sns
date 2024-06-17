@@ -3,9 +3,9 @@ package com.bluuminn.simplesns.fixture;
 import com.bluuminn.simplesns.domain.UserEntity;
 
 public class UserEntityFixture {
-    public static UserEntity get(String username, String password) {
+    public static UserEntity get(String username, String password, Integer userId) {
         return UserEntity.builder()
-                .id(1)
+                .id(userId)
                 .username(username)
                 .password(password)
                 .build();

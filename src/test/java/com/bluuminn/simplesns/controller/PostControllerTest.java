@@ -90,7 +90,7 @@ class PostControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(new PostModifyRequest(title, body)))
                 ).andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isUnauthorized());
     }
 
     @DisplayName("포스트 수정 시 본인이 작성한 글이 아닐 경우")
