@@ -31,17 +31,31 @@ public class PostService {
                 .orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", username)));
 
         // post exists
-        PostEntity postEntity = postEntityRepository.findById(postId)
+        PostEntity post = postEntityRepository.findById(postId)
                 .orElseThrow(() -> new SnsApplicationException(ErrorCode.POST_NOT_FOUND, String.format("Post %d not founded", postId)));
 
         // post permission
-        if (postEntity.getUser() != user) {
+        if (post.getUser() != user) {
             throw new SnsApplicationException(ErrorCode.INVALID_PERMISSION, String.format("%s has no permission with %s", username, postId));
         }
 
-        postEntity.updateTitle(title);
-        postEntity.updateBody(body);
+        post.updateTitle(title);
+        post.updateBody(body);
 
-        return Post.fromEntity(postEntity);
+        return Post.fromEntity(post);
+    }
+
+    @Transactional
+    public void delete(String username, Integer postId) {
+        UserEntity user = userEntityRepository.findByUsername(username)
+                .orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", username)));
+        // post exists
+        PostEntity post = postEntityRepository.findById(postId)
+                .orElseThrow(() -> new SnsApplicationException(ErrorCode.POST_NOT_FOUND, String.format("Post %d not founded", postId)));
+        // post permission
+        if (post.getUser() != user) {
+            throw new SnsApplicationException(ErrorCode.INVALID_PERMISSION, String.format("%s has no permission with %s", username, postId));
+        }
+        postEntityRepository.delete(post);
     }
 }
