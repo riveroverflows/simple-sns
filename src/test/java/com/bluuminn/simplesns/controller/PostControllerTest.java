@@ -4,6 +4,8 @@ import com.bluuminn.simplesns.controller.request.PostCreateRequest;
 import com.bluuminn.simplesns.controller.request.PostModifyRequest;
 import com.bluuminn.simplesns.exception.ErrorCode;
 import com.bluuminn.simplesns.exception.SnsApplicationException;
+import com.bluuminn.simplesns.fixture.PostEntityFixture;
+import com.bluuminn.simplesns.model.Post;
 import com.bluuminn.simplesns.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -71,6 +74,9 @@ class PostControllerTest {
     void modify_post() throws Exception {
         String title = "title";
         String body = "body";
+
+        when(postService.modify(eq(title), eq(body), any(), any()))
+                .thenReturn(Post.fromEntity(PostEntityFixture.get(1, "userName", 1)));
 
         mockMvc.perform(put("/api/v1/posts/1")
                         .contentType(MediaType.APPLICATION_JSON)

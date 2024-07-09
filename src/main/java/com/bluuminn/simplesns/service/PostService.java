@@ -4,6 +4,7 @@ import com.bluuminn.simplesns.domain.PostEntity;
 import com.bluuminn.simplesns.domain.UserEntity;
 import com.bluuminn.simplesns.exception.ErrorCode;
 import com.bluuminn.simplesns.exception.SnsApplicationException;
+import com.bluuminn.simplesns.model.Post;
 import com.bluuminn.simplesns.repository.PostEntityRepository;
 import com.bluuminn.simplesns.repository.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,22 @@ public class PostService {
     }
 
     @Transactional
-    public void modify(String title, String body, String username, Integer postId) {
+    public Post modify(String title, String body, String username, Integer postId) {
         UserEntity user = userEntityRepository.findByUsername(username)
                 .orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", username)));
 
         // post exists
+        PostEntity postEntity = postEntityRepository.findById(postId)
+                .orElseThrow(() -> new SnsApplicationException(ErrorCode.POST_NOT_FOUND, String.format("Post %d not founded", postId)));
 
         // post permission
+        if (postEntity.getUser() != user) {
+            throw new SnsApplicationException(ErrorCode.INVALID_PERMISSION, String.format("%s has no permission with %s", username, postId));
+        }
+
+        postEntity.updateTitle(title);
+        postEntity.updateBody(body);
+
+        return Post.fromEntity(postEntity);
     }
 }

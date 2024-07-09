@@ -67,4 +67,12 @@ public class PostEntity {
     public static PostEntity of(Integer postId, UserEntity user) {
         return new PostEntity(postId, user);
     }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateBody(String body) {
+        this.body = body;
+    }
 }
