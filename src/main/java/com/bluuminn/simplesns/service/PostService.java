@@ -46,7 +46,7 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(String username, Integer postId) {
+    public void delete(Integer postId, String username) {
         UserEntity user = userEntityRepository.findByUsername(username)
                 .orElseThrow(() -> new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not founded", username)));
         // post exists

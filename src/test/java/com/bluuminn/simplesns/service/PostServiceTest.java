@@ -126,7 +126,7 @@ class PostServiceTest {
         when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(userEntity));
         when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
 
-        Assertions.assertDoesNotThrow(() -> postService.delete(username, postId));
+        Assertions.assertDoesNotThrow(() -> postService.delete(postId, username));
     }
 
     @DisplayName("포스트 삭제 시 포스트가 존재하지 않는 경우")
@@ -141,7 +141,7 @@ class PostServiceTest {
         when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(userEntity));
         when(postEntityRepository.findById(postId)).thenReturn(Optional.empty());
 
-        SnsApplicationException exception = Assertions.assertThrows(SnsApplicationException.class, () -> postService.delete(username, postId));
+        SnsApplicationException exception = Assertions.assertThrows(SnsApplicationException.class, () -> postService.delete(postId, username));
         Assertions.assertEquals(ErrorCode.POST_NOT_FOUND, exception.getErrorCode());
     }
 
@@ -157,7 +157,7 @@ class PostServiceTest {
         when(userEntityRepository.findByUsername(username)).thenReturn(Optional.of(writer));
         when(postEntityRepository.findById(postId)).thenReturn(Optional.of(postEntity));
 
-        SnsApplicationException exception = Assertions.assertThrows(SnsApplicationException.class, () -> postService.delete(username, postId));
+        SnsApplicationException exception = Assertions.assertThrows(SnsApplicationException.class, () -> postService.delete(postId, username));
         Assertions.assertEquals(ErrorCode.INVALID_PERMISSION, exception.getErrorCode());
     }
 }
