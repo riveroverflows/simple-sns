@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
@@ -159,5 +161,21 @@ class PostServiceTest {
 
         SnsApplicationException exception = Assertions.assertThrows(SnsApplicationException.class, () -> postService.delete(postId, username));
         Assertions.assertEquals(ErrorCode.INVALID_PERMISSION, exception.getErrorCode());
+    }
+
+    @DisplayName("포스트 목록 조회가 성공한 경우")
+    @Test
+    void get_posts_success() throws Exception {
+        Pageable pageable = mock(Pageable.class);
+        when(postEntityRepository.findAll(pageable)).thenReturn(Page.empty());
+        Assertions.assertDoesNotThrow(() -> postService.list(pageable));
+    }
+
+    @DisplayName("내 포스트 목록 조회가 성공한 경우")
+    @Test
+    void get_my_posts_success() throws Exception {
+        Pageable pageable = mock(Pageable.class);
+        when(postEntityRepository.findAllByUser(any(), pageable)).thenReturn(Page.empty());
+        Assertions.assertDoesNotThrow(() -> postService.my("", pageable));
     }
 }
