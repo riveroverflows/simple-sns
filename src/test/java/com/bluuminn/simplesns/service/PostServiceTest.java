@@ -175,7 +175,9 @@ class PostServiceTest {
     @Test
     void get_my_posts_success() throws Exception {
         Pageable pageable = mock(Pageable.class);
-        when(postEntityRepository.findAllByUser(any(), pageable)).thenReturn(Page.empty());
+        UserEntity user = mock(UserEntity.class);
+        when(userEntityRepository.findByUsername(any())).thenReturn(Optional.of(user));
+        when(postEntityRepository.findAllByUser(user, pageable)).thenReturn(Page.empty());
         Assertions.assertDoesNotThrow(() -> postService.my("", pageable));
     }
 }

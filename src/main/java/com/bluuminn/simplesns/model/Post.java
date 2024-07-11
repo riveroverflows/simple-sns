@@ -24,6 +24,7 @@ public class Post {
         return Post.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
+                .body(entity.getBody())
                 .user(User.fromEntity(entity.getUser()))
                 .registerdAt(entity.getRegisterdAt())
                 .updatedAt(entity.getUpdatedAt())
