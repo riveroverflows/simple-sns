@@ -247,7 +247,7 @@ class PostControllerTest {
     }
 
     @DisplayName("좋아요 버튼 클릭 시 포스트가 없는 경우")
-    @WithAnonymousUser
+    @WithMockUser
     @Test
     void not_exist_posts_when_likes() throws Exception {
         doThrow(new SnsApplicationException(ErrorCode.POST_NOT_FOUND)).when(postService).like(any(), any());
